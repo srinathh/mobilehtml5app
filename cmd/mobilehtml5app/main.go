@@ -26,6 +26,10 @@ parameters and any custom server instance specific settings are also passed
 as through the Context and can be accessed via Context.Value(). For more details
 on the server see http://godoc.org/github.com/srinathh/mobilehtml5app/server
 
+You may want to set the environment variable $GO15VENDOREXPERIMENT=1 to use
+the vendored versions of the packages github.com/julienschmidt/httprouter and
+github.com/tylerb/graceful which are used in the Server.
+
 Android apps
 
 To create an Android project run the following command in the project folder
@@ -36,9 +40,16 @@ you create for your mobile app under your GOPATH.
 This will generate webapp.go and an Android gradle based project in a subfolder
 called androidapp. You can build the Android project thorugh the command line. To
 work with it it in Android Studio, make sure to select "Import Project" in the
-first screen rather than "Open Project"
+first screen rather than "Open Project".
 
-The other command line options for building Android apps are:
+There are two options for the WebView - the Android System WebView or the
+Apache CrossWalk project XWalkView. The Android System WebView is a reliable
+HTML5 platform only if you are targeting Android Kit-Kat (4.4) or higher devices
+in which the WebView is based on Chromium. The CrossWalk project XWalkView has
+compatibility from Android Ice Cream Sandwitch (4.0) version onwards and is the
+default version used.
+
+The full set of command line options for building Android apps are:
 	-apitarget string
 		Required. Android build target. To list possible targets run
 		$ANDROID_HOME/tools/android list targets
@@ -53,7 +64,7 @@ The other command line options for building Android apps are:
 	-title string
 		Optional. App Title defaults to -name if omitted.
 	-webview string
-		Optional. Can be either xwalk (to use CrossWalk Webview) or system
+		Optional. Can be either xwalk (to use CrossWalk XWalkView) or system
 		(to use Android WebView). Note that only KitKat (API19) and above
 		have a system WebView supporting modern HTML5 capabilities based on
 		Chromium and we set 19 as the minSdkVersion. (default "xwalk")
