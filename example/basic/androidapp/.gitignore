@@ -1,0 +1,6 @@
+androidapp.iml
+.gradle/
+.idea/
+local.properties
+build/
+libs/backend.aar
