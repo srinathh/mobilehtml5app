@@ -15,7 +15,9 @@ Under the hoods, the command will generate a file webapp.go that exports Start()
 and Stop() functions to start and stop the backend server which are called by
 lifecycle function hooks of the native portion of the App which houses the webview
 The file webapp.go also will have two sample handlers to illustrate how to
-create and register your HTTP handlers.
+create and register your HTTP handlers. The gomobile bind command is used
+to generate the required shared library and is hooked up to the native build
+process to automatically re-build the go shared library.
 
 The webapp uses an server that integrates graceful shutdown and parameterized routing. It
 requires handlers to satisfy the ContextHandler interface similar to http.Handler but
