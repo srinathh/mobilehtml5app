@@ -4,18 +4,23 @@ package com.github.srinathh.mobilehtml5app.example.basic.androidapp;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.webkit.WebSettings;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import org.xwalk.core.XWalkView;
+import android.webkit.WebView;
 import go.basic.Basic;
 
 public class Main extends Activity {
-    private XWalkView mWebView;
+    private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mWebView = new XWalkView(this, this);
+        mWebView = new WebView(this);
+		WebSettings webSettings = mWebView.getSettings();
+		webSettings.setJavaScriptEnabled(true);
+		mWebView.setWebViewClient(new WebViewClient());
         setContentView(mWebView);
     }
 
@@ -23,13 +28,8 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mWebView != null) {
-            mWebView.resumeTimers();
-            mWebView.onShow();
-        }
-
         try {
-			mWebView.load(Basic.Start() + "/", null);
+			mWebView.loadUrl(Basic.Start() + "/");
         } catch (Exception e) {
             Toast.makeText(this,"Error:"+e.toString(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -42,24 +42,15 @@ public class Main extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mWebView != null) {
-            mWebView.pauseTimers();
-            mWebView.onHide();
-        }
 		Basic.Stop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mWebView != null) {
-            mWebView.onDestroy();
-        }
     }
 
-    // We override back key press to close the app rather than pass it to the XWalkView to give
-    // a consistent user experience with how apps behave on Android.
-    // Also see https://crosswalk-project.org/jira/browse/XWALK-4816
+    // We override back key press to close the app rather than pass it to the WebView
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         if(event.getKeyCode() == KeyEvent.KEYCODE_BACK){

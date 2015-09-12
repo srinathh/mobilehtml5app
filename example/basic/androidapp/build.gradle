@@ -22,21 +22,17 @@ android {
 
 android {
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 19
     }
 }
 
 repositories {
-    maven {
-        url 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2'
-    }
     flatDir{
         dirs 'libs'
     }
 }
 
 dependencies {
-    compile 'org.xwalk:xwalk_core_library:14.43.343.17'
     compile(name:'backend', ext:'aar')
 }
 

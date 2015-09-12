@@ -318,5 +318,4 @@ const gitignore = `androidapp.iml
 .idea/
 local.properties
 build/
-libs/backend.aar
 `
