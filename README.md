@@ -22,7 +22,8 @@ This project attempts to make it easy to use the mobile support in Go and its HT
 server strengths in conjunction with HTML5 supporting WebViews to create mobile apps.
 
 ## Usage & Reference
-- [mobilehtml5app command](http://godoc.org/github.com/srinathh/mobilehtml5app/cmd/mobilehtml5app) that generates a project with go and platform native components
-- [server package](http://godoc.org/github.com/srinathh/mobilehtml5app/server) used for HTTP Server
+- First use `go get github.com/srinathh/mobilehtml5app/...` to get the packages and the command
+- Refer to [mobilehtml5app command](http://godoc.org/github.com/srinathh/mobilehtml5app/cmd/mobilehtml5app) for documentation on how to generate a mobile app project with a go HTTP server backend and HTML5 frontend.
+- Refer to [server package](http://godoc.org/github.com/srinathh/mobilehtml5app/server) for documentation on the server used in the webapp that supports graceful restarts and parameterized routing
 
 More documentation to come.
