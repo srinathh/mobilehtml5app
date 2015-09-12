@@ -1,4 +1,4 @@
-package main /*
+/*
 Command mobilehtml5app generates a simple framework to develop Go language
 mobile applications with HTML5 based frontends using WebViews and a golang
 backend. It currently supports Android only.
@@ -71,6 +71,8 @@ The full set of command line options for building Android apps are:
 		have a system WebView supporting modern HTML5 capabilities based on
 		Chromium and we set 19 as the minSdkVersion. (default "xwalk")
 */
+package main
+
 import (
 	"bytes"
 	"flag"
