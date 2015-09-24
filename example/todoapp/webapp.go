@@ -39,20 +39,23 @@ func Start(settings string) (string, error) {
 
 	//setting up our handlers
 	srv.HandleFunc(server.GET, "/", logger(serveIndex))
-	srv.HandleFunc(server.GET, "/items", logger(serveItems))
-	srv.HandleFunc(server.POST, "/items/:itemid", logger(putEditItem))
+	srv.HandleFunc(server.GET, "/items", logger(fetchAll))
+	srv.HandleFunc(server.POST, "/items/new", logger(createItem))
+	srv.HandleFunc(server.GET, "/items/:itemid", logger(deleteItem))
 	srv.HandleFunc(server.GET, "/res/*respath", logger(serveRes))
 	//starting the server
 
-	bk = newMapBackend()
+	backend := newMapBackend()
+	backend.createSample()
+	bk = backend
 
 	return srv.Start("127.0.0.1:0", settingsMap)
 }
 
 type backend interface {
-	fetchAll() (map[string]item, error)
-	edit(string, item) error
-	exists(id string) bool
+	fetchAll() ([]item, error)
+	create(item) error
+	delete(id string) error
 }
 
 var bk backend

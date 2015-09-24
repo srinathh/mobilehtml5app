@@ -10,59 +10,61 @@ import (
 	"golang.org/x/net/context"
 )
 
-var wants = map[string]item{
-	"1442717418486489952": item{
-		Text:     "Test Item 1",
-		Status:   0,
-		Priority: 0,
-	},
-	"1442717451419839383": item{
-		Text:     "Test Item 2",
-		Status:   1,
-		Priority: 0,
-	},
-	"1442717480424770931": item{
-		Text:     "Test Item 3",
-		Status:   0,
-		Priority: 1,
-	},
-	"1442717575928777740": item{
-		Text:     "Test Item 4",
-		Status:   1,
-		Priority: 1,
-	},
-}
-
 func TestFetchItems(t *testing.T) {
-	bk = &mapBackend{
-		Items: wants,
-	}
+	backend := newMapBackend()
+	backend.createSample()
+	bk = backend
 	w := httptest.NewRecorder()
-	serveItems(context.Background(), w, nil)
-	got := map[string]item{}
+	fetchAll(context.Background(), w, nil)
+
+	got := []item{}
 	if err := json.NewDecoder(w.Body).Decode(&got); err != nil {
 		t.Fatal(err)
 	}
 
-	if len(got) != len(wants) {
-		t.Errorf("length mismatch\ngot: %v\nwant: %v\n", got, wants)
+	if len(got) != len(backend.Items) {
+		t.Errorf("length mismatch\ngot: %v\nwant: %v\n", got, backend.Items)
 	}
 
-	for k, v := range got {
-		if v != wants[k] {
-			t.Errorf("item mismatch\ngot: %v\nwant: %v\n", v, wants[k])
+	for _, item := range got {
+		found, ok := backend.Items[item.ID]
+		if !ok || item.Text != found.Text || item.Priority != found.Priority {
+			t.Errorf("item mismatch\ngot: %v\nwant: %v\n", item, backend.Items[item.ID])
+		}
+	}
+}
+
+func TestDeleteItem(t *testing.T) {
+	backend := newMapBackend()
+	backend.createSample()
+	bk = backend
+
+	keys := []string{}
+	for k, _ := range backend.Items {
+		keys = append(keys, k)
+	}
+
+	w := httptest.NewRecorder()
+	for _, k := range keys {
+		c := context.WithValue(context.Background(), "itemid", k)
+		deleteItem(c, w, nil)
+		if w.Code != http.StatusOK {
+			t.Fatalf("Did not get OK: %v: %v", w.Code, k)
 		}
 	}
 
+	if len(backend.Items) != 0 {
+		t.Fatalf("error deleting all entries")
+	}
 }
 
-func TestEditItem(t *testing.T) {
+func TestCreateItem(t *testing.T) {
 	backend := newMapBackend()
 	bk = backend
 	w := httptest.NewRecorder()
 	want := item{
+		ID:       "new",
 		Text:     "Test Item 1",
-		Status:   0,
 		Priority: 0,
 	}
 	b, _ := json.Marshal(want)
@@ -70,7 +72,8 @@ func TestEditItem(t *testing.T) {
 	form.Add("data", string(b))
 	r, err := http.NewRequest("POST", "127.0.0.1:9898/items/new", nil)
 	r.PostForm = form
-	putEditItem(context.WithValue(context.Background(), "itemid", "new"), w, r)
+
+	createItem(context.Background(), w, r)
 	if w.Code != http.StatusOK {
 		t.Fatal(err)
 	}
@@ -78,9 +81,9 @@ func TestEditItem(t *testing.T) {
 		t.Fatal("Unable to set item")
 	}
 
-	for _, v := range backend.Items {
-		if v != want {
-			t.Error("mismatch")
+	for _, item := range backend.Items {
+		if item.Priority != want.Priority || item.Text != want.Text {
+			t.Errorf("item mismatch\ngot: %v\nwant: %v\n", item, want)
 		}
 	}
 }
