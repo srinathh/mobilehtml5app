@@ -12,10 +12,10 @@
     <script src="/res/bootstrap/js/bootstrap.min.js" ></script>
     <style media="screen" type="text/css">
         .bluepanel{
-        	background-color: #A9F5F2;
+        	background-color: lightcyan;
         }
         .redpanel{
-        	background-color: #ff9999;
+        	background-color: peachpuff;
         }
         .todoicon{
         	color:#808080;
@@ -25,16 +25,32 @@
             background-color: #EEEEEE;
         }
         #todolist{
-            padding-top:15px;
+            padding-top:100px;
         }
         .glyphicon{
             padding-left: 5px;
             font-size: larger;
         }
+        #todonew{
+            position: fixed;
+            padding-left:15px;
+            padding-right:15px;
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top:15px;
+            z-index: 100000;
+        }
+        .tdicon{
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 	<div class="container-fluid" >
+        <div class="row">
+            <div class="col-md-12" id="todonew"></div>
+        </div>
 		<div class="row" >
 			<div class="col-md-12" id="todolist"></div>
 		</div>
@@ -59,9 +75,9 @@
             	    	<div className="panel-body " id="createItemPanel">
                     		<table width="100%">
                     			<tr>
-                                    <td><input type="text" className="form-control" id="createItemText" placeholder="Create a Todo" /></td>
-        				            <td width="10%">&nbsp;<span onClick={this.handleClickPriority} className="glyphicon glyphicon-exclamation-sign todoicon" style={{"color":thiscolor}}></span></td>
-        				            <td width="10%"><span onClick={this.handleClickCreate} className="glyphicon glyphicon-plus todoicon"></span></td>
+                                    <td width="80%"><input type="text" className="form-control" id="createItemText" placeholder="Create a Todo" /></td>
+        				            <td className="tdicon" width="15%"><span onClick={this.handleClickPriority} className="glyphicon glyphicon-exclamation-sign todoicon" style={{"color":thiscolor}}></span></td>
+        				            <td className="tdicon" width="10%"><span onClick={this.handleClickCreate} className="glyphicon glyphicon-plus todoicon"></span></td>
             	        		</tr>
                     		</table>
             	    	</div>
@@ -105,7 +121,7 @@
                 				<table width="100%">
                 					<tr>
         	        					<td>{this.props.item.Text}</td>
-        	        					<td width="10%"><span onClick={this.handleClick} className="glyphicon glyphicon-thumbs-up todoicon"></span></td>
+        	        					<td className="tdicon" width="10%"><span onClick={this.handleClick} className="glyphicon glyphicon-ok todoicon"></span></td>
         	        				</tr>
                 				</table>
         	    	    </div>
@@ -129,7 +145,6 @@
 
         		return(
         			<div>
-                        <TodoNew />
         				{todos}
         			</div>
         		);
@@ -175,6 +190,10 @@
         		datatype:"json",
         		success:function(json){
         			var items = $.parseJSON(json);
+                    React.render(
+                        <TodoNew />,
+                        document.getElementById("todonew")
+                    );
         			React.render(
         				<TodoList items={items} />,
         				document.getElementById("todolist")
