@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	maxTextSize = 65536
-	maxPriority = 1
+	maxPriority       = 1
+	priorityNormal    = 0
+	priorityImportant = 1
 )
 
 type item struct {
@@ -24,10 +25,9 @@ type item struct {
 }
 
 func (i item) check() error {
-	if l := len(i.Text); l > maxTextSize {
-		return fmt.Errorf("checkInputs: text is too long: %d", l)
+	if i.time == time.Unix(0, 0) {
+		return fmt.Errorf("zero time not allowed")
 	}
-
 	if i.Priority < 0 || i.Priority > maxPriority {
 		return fmt.Errorf("checkInputs: bad priority: %d", i.Priority)
 	}
@@ -41,12 +41,14 @@ type itemSorter []item
 func (s itemSorter) Len() int { return len(s) }
 
 func (s itemSorter) Less(i, j int) bool {
+	//higher priority item takes precedence
 	if s[i].Priority > s[j].Priority {
 		return true
 	} else if s[i].Priority < s[j].Priority {
 		return false
 	}
 
+	//earlier item takes precedence
 	if s[i].time.Before(s[j].time) {
 		return true
 	}
@@ -55,20 +57,18 @@ func (s itemSorter) Less(i, j int) bool {
 
 func (s itemSorter) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
-const (
-	priorityNormal    int = 0
-	priorityImportant int = 1
-)
-
 func fetchAll(c context.Context, w http.ResponseWriter, r *http.Request) {
-	items, err := bk.fetchAll()
-	sort.Sort(itemSorter(items))
+	bend := c.Value(backendptr).(backend)
 
+	items, err := bend.FetchAll()
 	if err != nil {
 		log.Printf("fetchAll: error fetching items: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
 		return
 	}
+
+	sort.Sort(itemSorter(items))
+
 	if err := json.NewEncoder(w).Encode(items); err != nil {
 		log.Printf("fetchAll: error encoding items: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
@@ -84,15 +84,17 @@ func createItem(c context.Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	i.time = time.Now()
+	i.ID = i.time.Format(timestamp)
+
 	if err := i.check(); err != nil {
 		log.Println(err)
 		http.Error(w, "", http.StatusBadRequest)
 		return
 	}
-	i.time = time.Now()
-	i.ID = i.time.Format(timestamp)
 
-	if err := bk.create(i); err != nil {
+	bend := c.Value(backendptr).(backend)
+	if err := bend.Create(i); err != nil {
 		log.Println(err)
 		http.Error(w, "", http.StatusBadRequest)
 		return
@@ -101,7 +103,8 @@ func createItem(c context.Context, w http.ResponseWriter, r *http.Request) {
 
 func deleteItem(c context.Context, w http.ResponseWriter, r *http.Request) {
 	id := c.Value("itemid").(string)
-	if err := bk.delete(id); err != nil {
+	bend := c.Value(backendptr).(backend)
+	if err := bend.Delete(id); err != nil {
 		log.Println(err)
 		http.Error(w, "", http.StatusBadRequest)
 		return

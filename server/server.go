@@ -149,7 +149,7 @@ func (s *Server) wrapToHandle(handler ContextHandler) httprouter.Handle {
 // Start will call Stop() first to close it. Start will return the root url
 // of the server (without the trailing slash) if successfully started. This
 // could be useful if you have requested for a system chosen port
-func (s *Server) Start(addr string, ctxValues map[string]string) (string, error) {
+func (s *Server) Start(addr string, ctxValues map[string]interface{}) (string, error) {
 	if s.server != nil {
 		s.Stop(time.Millisecond * 100)
 	}

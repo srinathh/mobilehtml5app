@@ -1,5 +1,8 @@
 package todoapp
 
+// command to build static assets use the command -
+//  go-bindata -nocompress -prefix res res/...
+
 import (
 	"bytes"
 	"log"
@@ -10,6 +13,10 @@ import (
 
 func serveIndex(_ context.Context, w http.ResponseWriter, r *http.Request) {
 	serveAsset("app/index.html", w, r)
+}
+
+func serveComponents(_ context.Context, w http.ResponseWriter, r *http.Request) {
+	serveAsset("app/components.js", w, r)
 }
 
 func serveRes(c context.Context, w http.ResponseWriter, r *http.Request) {
