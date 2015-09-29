@@ -45,4 +45,23 @@ task genGoMobileAAR(type:Exec) {
   commandLine 'gomobile', 'bind', '-o', 'androidapp/libs/backend.aar', '.'
 }
 
+task compileJSX(type:Exec){
+    workingDir '../data'
+    commandLine 'babel', '-o','res/app/components.js', 'res/app/components.jsx'
+}
+
+task rebuildBinData(type:Exec){
+    workingDir '../data'
+    commandLine 'go-bindata' ,'-nocompress', '-prefix', 'res', 'res/...'
+}
+
+task fixPackageName(type:Exec){
+    workingDir '../data'
+    commandLine 'sed', '-i' ,'s/package main/package data/g', 'bindata.go'
+
+}
+
+rebuildBinData.dependsOn(compileJSX)
+fixPackageName.dependsOn(rebuildBinData)
+genGoMobileAAR.dependsOn(fixPackageName)
 preBuild.dependsOn(genGoMobileAAR)

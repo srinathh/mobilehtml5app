@@ -41,7 +41,7 @@ func newBoltBackend(pdir string) (*boltbackend, error) {
 
 }
 
-func (b *boltbackend) FetchAll() ([]item, error) {
+func (b *boltbackend) fetchAll() ([]item, error) {
 	ret := []item{}
 	if err := b.db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(bucketname))
@@ -62,7 +62,7 @@ func (b *boltbackend) FetchAll() ([]item, error) {
 	return ret, nil
 }
 
-func (b *boltbackend) Create(i item) error {
+func (b *boltbackend) create(i item) error {
 	if err := b.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(bucketname))
 		buf := bytes.Buffer{}
@@ -79,7 +79,7 @@ func (b *boltbackend) Create(i item) error {
 	return nil
 }
 
-func (b *boltbackend) Delete(id string) error {
+func (b *boltbackend) delete(id string) error {
 	if err := b.db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(bucketname))
 		if err := b.Delete([]byte(id)); err != nil {
@@ -92,6 +92,6 @@ func (b *boltbackend) Delete(id string) error {
 	return nil
 }
 
-func (b *boltbackend) Stop() {
+func (b *boltbackend) stop() {
 	b.db.Close()
 }

@@ -32,7 +32,7 @@ var TodoNew = React.createClass({
                         ),
                         React.createElement(
                             "td",
-                            { className: "tdicon", width: "15%" },
+                            { className: "tdicon", width: "10%" },
                             React.createElement("span", { onClick: this.handleClickPriority, className: "glyphicon glyphicon-exclamation-sign todoicon", style: { "color": thiscolor } })
                         ),
                         React.createElement(
@@ -179,4 +179,3 @@ var fetchItems = function fetchItems() {
 $(function () {
     fetchItems();
 });
-

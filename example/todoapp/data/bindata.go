@@ -15,7 +15,7 @@
 // res/react/react.min.js
 // DO NOT EDIT!
 
-package todoapp
+package data
 
 import (
 	"fmt"
@@ -90,7 +90,7 @@ var TodoNew = React.createClass({
                         ),
                         React.createElement(
                             "td",
-                            { className: "tdicon", width: "15%" },
+                            { className: "tdicon", width: "10%" },
                             React.createElement("span", { onClick: this.handleClickPriority, className: "glyphicon glyphicon-exclamation-sign todoicon", style: { "color": thiscolor } })
                         ),
                         React.createElement(
@@ -237,7 +237,6 @@ var fetchItems = function fetchItems() {
 $(function () {
     fetchItems();
 });
-
 `)
 
 func appComponentsJsBytes() ([]byte, error) {
@@ -250,7 +249,7 @@ func appComponentsJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "app/components.js", size: 5710, mode: os.FileMode(436), modTime: time.Unix(1443291978, 0)}
+	info := bindataFileInfo{name: "app/components.js", size: 5709, mode: os.FileMode(436), modTime: time.Unix(1443551485, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -272,7 +271,7 @@ var _appComponentsJsx = []byte(`        var TodoNew = React.createClass({
                     		<table width="100%">
                     			<tr>
                                     <td width="80%"><input type="text" className="form-control" id="createItemText" placeholder="Create a Todo" /></td>
-        				            <td className="tdicon" width="15%"><span onClick={this.handleClickPriority} className="glyphicon glyphicon-exclamation-sign todoicon" style={{"color":thiscolor}}></span></td>
+        				            <td className="tdicon" width="10%"><span onClick={this.handleClickPriority} className="glyphicon glyphicon-exclamation-sign todoicon" style={{"color":thiscolor}}></span></td>
         				            <td className="tdicon" width="10%"><span onClick={this.handleClickCreate} className="glyphicon glyphicon-plus todoicon"></span></td>
             	        		</tr>
                     		</table>
@@ -417,7 +416,7 @@ func appComponentsJsx() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "app/components.jsx", size: 4798, mode: os.FileMode(436), modTime: time.Unix(1443291941, 0)}
+	info := bindataFileInfo{name: "app/components.jsx", size: 4798, mode: os.FileMode(436), modTime: time.Unix(1443293766, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -464,14 +463,8 @@ var _appIndexHtml = []byte(`<!DOCTYPE html>
         .tdicon{
             text-align: center;
         }
-        html {
-            background: url(/res/img/bg.jpg) no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-        body {
+        body{
+            background-repeat:repeat;
             background-color: transparent;
         }
     </style>
@@ -485,8 +478,20 @@ var _appIndexHtml = []byte(`<!DOCTYPE html>
 			<div class="col-md-12" id="todolist"></div>
 		</div>
 	</div>
+    <script type="text/javascript">
+        $(function(){
+            setBG();
+        })
+        $( window ).resize(function() {
+            setBG();
+        });
+        var setBG = function(){
+            path = "\'/bg/"+$(window).width().toString()+"/"+$(window).height().toString()+"\'";
+            $("body").css("background-image", "url("+path+")");
+        }
+    </script>
+    <script type="text/javascript" src="components.js"></script>
 
-    <<script type="text/javascript" src="components.js"></script>
 </body>
 </html>
 `)
@@ -501,7 +506,7 @@ func appIndexHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "app/index.html", size: 1861, mode: os.FileMode(436), modTime: time.Unix(1443291714, 0)}
+	info := bindataFileInfo{name: "app/index.html", size: 2016, mode: os.FileMode(436), modTime: time.Unix(1443349999, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }

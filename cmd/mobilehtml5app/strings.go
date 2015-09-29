@@ -29,7 +29,7 @@ func Start() (string, error) {
 	srv = server.NewServer()
 	srv.HandleFunc(server.GET, "/", index)
 	srv.HandleFunc(server.GET, "/:name", hello)
-	return srv.Start("127.0.0.1:0", map[string]string{greetString: "Namaste"})
+	return srv.Start("127.0.0.1:0", map[string]interface{}{greetString: "Namaste"})
 }
 
 // Stop is called by the native portion of the webapp to stop the web server.

@@ -15,7 +15,7 @@
                     		<table width="100%">
                     			<tr>
                                     <td width="80%"><input type="text" className="form-control" id="createItemText" placeholder="Create a Todo" /></td>
-        				            <td className="tdicon" width="15%"><span onClick={this.handleClickPriority} className="glyphicon glyphicon-exclamation-sign todoicon" style={{"color":thiscolor}}></span></td>
+        				            <td className="tdicon" width="10%"><span onClick={this.handleClickPriority} className="glyphicon glyphicon-exclamation-sign todoicon" style={{"color":thiscolor}}></span></td>
         				            <td className="tdicon" width="10%"><span onClick={this.handleClickCreate} className="glyphicon glyphicon-plus todoicon"></span></td>
             	        		</tr>
                     		</table>
