@@ -3,6 +3,7 @@
 // res/app/components.js
 // res/app/components.jsx
 // res/app/index.html
+// res/app/styles.css
 // res/bootstrap/css/bootstrap.min.css
 // res/bootstrap/fonts/glyphicons-halflings-regular.eot
 // res/bootstrap/fonts/glyphicons-halflings-regular.svg
@@ -249,7 +250,7 @@ func appComponentsJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "app/components.js", size: 5709, mode: os.FileMode(436), modTime: time.Unix(1443551485, 0)}
+	info := bindataFileInfo{name: "app/components.js", size: 5709, mode: os.FileMode(436), modTime: time.Unix(1443554288, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -416,7 +417,7 @@ func appComponentsJsx() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "app/components.jsx", size: 4798, mode: os.FileMode(436), modTime: time.Unix(1443293766, 0)}
+	info := bindataFileInfo{name: "app/components.jsx", size: 4798, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -432,42 +433,7 @@ var _appIndexHtml = []byte(`<!DOCTYPE html>
     <script src="/res/jquery/jquery.min.js" ></script>
     <script src="/res/react/react.min.js"></script>
     <script src="/res/bootstrap/js/bootstrap.min.js" ></script>
-    <style media="screen" type="text/css">
-        .normalpanel{
-        	background-color: cornsilk;
-        }
-        .prioritypanel{
-        	background-color: lightsalmon;
-        }
-        .todoicon{
-        	color:#808080;
-        	font-size: 20px;
-        }
-        #todolist{
-            padding-top:100px;
-        }
-        .glyphicon{
-            padding-left: 5px;
-            font-size: larger;
-        }
-        #todonew{
-            position: fixed;
-            padding-left:15px;
-            padding-right:15px;
-            width: 100%;
-            margin-left: 0;
-            margin-right: 0;
-            margin-top:15px;
-            z-index: 100000;
-        }
-        .tdicon{
-            text-align: center;
-        }
-        body{
-            background-repeat:repeat;
-            background-color: transparent;
-        }
-    </style>
+    <link href="/res/app/styles.css" rel="stylesheet"/>
 </head>
 <body>
 	<div class="container-fluid" >
@@ -482,15 +448,12 @@ var _appIndexHtml = []byte(`<!DOCTYPE html>
         $(function(){
             setBG();
         })
-        $( window ).resize(function() {
-            setBG();
-        });
         var setBG = function(){
             path = "\'/bg/"+$(window).width().toString()+"/"+$(window).height().toString()+"\'";
             $("body").css("background-image", "url("+path+")");
         }
     </script>
-    <script type="text/javascript" src="components.js"></script>
+    <script type="text/javascript" src="/res/app/components.js"></script>
 
 </body>
 </html>
@@ -506,7 +469,58 @@ func appIndexHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "app/index.html", size: 2016, mode: os.FileMode(436), modTime: time.Unix(1443349999, 0)}
+	info := bindataFileInfo{name: "app/index.html", size: 1154, mode: os.FileMode(436), modTime: time.Unix(1443553502, 0)}
+	a := &asset{bytes: bytes, info:  info}
+	return a, nil
+}
+
+var _appStylesCss = []byte(`.normalpanel{
+	background-color: cornsilk;
+}
+.prioritypanel{
+	background-color: lightsalmon;
+}
+.todoicon{
+	color:#808080;
+	font-size: 20px;
+}
+#todolist{
+    padding-top:100px;
+}
+.glyphicon{
+    padding-left: 5px;
+    font-size: larger;
+}
+#todonew{
+    position: fixed;
+    padding-left:15px;
+    padding-right:15px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top:15px;
+    z-index: 100000;
+}
+.tdicon{
+    text-align: center;
+}
+body{
+    background-repeat:repeat;
+    background-color: transparent;
+}
+`)
+
+func appStylesCssBytes() ([]byte, error) {
+	return _appStylesCss, nil
+}
+
+func appStylesCss() (*asset, error) {
+	bytes, err := appStylesCssBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "app/styles.css", size: 526, mode: os.FileMode(436), modTime: time.Unix(1443553284, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -527,7 +541,7 @@ func bootstrapCssBootstrapMinCss() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "bootstrap/css/bootstrap.min.css", size: 122540, mode: os.FileMode(420), modTime: time.Unix(1434451370, 0)}
+	info := bindataFileInfo{name: "bootstrap/css/bootstrap.min.css", size: 122540, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -544,7 +558,7 @@ func bootstrapFontsGlyphiconsHalflingsRegularEot() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.eot", size: 20127, mode: os.FileMode(420), modTime: time.Unix(1434450378, 0)}
+	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.eot", size: 20127, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -848,7 +862,7 @@ func bootstrapFontsGlyphiconsHalflingsRegularSvg() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.svg", size: 108738, mode: os.FileMode(420), modTime: time.Unix(1434450378, 0)}
+	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.svg", size: 108738, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -865,7 +879,7 @@ func bootstrapFontsGlyphiconsHalflingsRegularTtf() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.ttf", size: 45404, mode: os.FileMode(420), modTime: time.Unix(1434450378, 0)}
+	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.ttf", size: 45404, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -882,7 +896,7 @@ func bootstrapFontsGlyphiconsHalflingsRegularWoff() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.woff", size: 23424, mode: os.FileMode(420), modTime: time.Unix(1434450378, 0)}
+	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.woff", size: 23424, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -899,7 +913,7 @@ func bootstrapFontsGlyphiconsHalflingsRegularWoff2() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.woff2", size: 18028, mode: os.FileMode(420), modTime: time.Unix(1434450378, 0)}
+	info := bindataFileInfo{name: "bootstrap/fonts/glyphicons-halflings-regular.woff2", size: 18028, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -922,7 +936,7 @@ func bootstrapJsBootstrapMinJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "bootstrap/js/bootstrap.min.js", size: 36816, mode: os.FileMode(420), modTime: time.Unix(1434451370, 0)}
+	info := bindataFileInfo{name: "bootstrap/js/bootstrap.min.js", size: 36816, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -939,7 +953,7 @@ func imgBgJpg() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "img/bg.jpg", size: 874088, mode: os.FileMode(416), modTime: time.Unix(1443291175, 0)}
+	info := bindataFileInfo{name: "img/bg.jpg", size: 874088, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -960,7 +974,7 @@ func jqueryJqueryMinJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "jquery/jquery.min.js", size: 84345, mode: os.FileMode(416), modTime: time.Unix(1442606666, 0)}
+	info := bindataFileInfo{name: "jquery/jquery.min.js", size: 84345, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -992,7 +1006,7 @@ func reactReactMinJs() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "react/react.min.js", size: 121738, mode: os.FileMode(420), modTime: time.Unix(1431107928, 0)}
+	info := bindataFileInfo{name: "react/react.min.js", size: 121738, mode: os.FileMode(436), modTime: time.Unix(1443553029, 0)}
 	a := &asset{bytes: bytes, info:  info}
 	return a, nil
 }
@@ -1052,6 +1066,7 @@ var _bindata = map[string]func() (*asset, error){
 	"app/components.js": appComponentsJs,
 	"app/components.jsx": appComponentsJsx,
 	"app/index.html": appIndexHtml,
+	"app/styles.css": appStylesCss,
 	"bootstrap/css/bootstrap.min.css": bootstrapCssBootstrapMinCss,
 	"bootstrap/fonts/glyphicons-halflings-regular.eot": bootstrapFontsGlyphiconsHalflingsRegularEot,
 	"bootstrap/fonts/glyphicons-halflings-regular.svg": bootstrapFontsGlyphiconsHalflingsRegularSvg,
@@ -1110,6 +1125,8 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		"components.jsx": &bintree{appComponentsJsx, map[string]*bintree{
 		}},
 		"index.html": &bintree{appIndexHtml, map[string]*bintree{
+		}},
+		"styles.css": &bintree{appStylesCss, map[string]*bintree{
 		}},
 	}},
 	"bootstrap": &bintree{nil, map[string]*bintree{

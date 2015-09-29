@@ -21,10 +21,6 @@ func serveIndex(_ context.Context, w http.ResponseWriter, r *http.Request) {
 	serveAsset("app/index.html", w, r)
 }
 
-func serveComponents(_ context.Context, w http.ResponseWriter, r *http.Request) {
-	serveAsset("app/components.js", w, r)
-}
-
 func serveRes(c context.Context, w http.ResponseWriter, r *http.Request) {
 	respath := c.Value("respath").(string)
 	if respath[0] == '/' {

@@ -47,7 +47,6 @@ func Start(pdir string) (string, error) {
 
 	//setting up our handlers
 	srv.HandleFunc(server.GET, "/", logger(serveIndex))
-	srv.HandleFunc(server.GET, "/components.js", logger(serveComponents))
 	srv.HandleFunc(server.GET, "/items", logger(fetchAll))
 	srv.HandleFunc(server.POST, "/items/new", logger(createItem))
 	srv.HandleFunc(server.GET, "/items/:itemid", logger(deleteItem))
