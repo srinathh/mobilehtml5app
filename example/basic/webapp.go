@@ -16,7 +16,7 @@ var srv *server.Server
 // Start is called by the native portion of the webapp to start the web server.
 // It returns the server root URL (without the trailing slash) and any errors.
 func Start() (string, error) {
-	srv := server.NewServer()
+	srv = server.NewServer()
 	srv.HandleFunc(server.GET, "/", index)
 	srv.HandleFunc(server.GET, "/:name", hello)
 	return srv.Start("127.0.0.1:0", map[string]string{greetString: "Namaste"})
