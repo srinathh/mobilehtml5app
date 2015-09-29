@@ -5,7 +5,7 @@ a rich HTML5 based user interface on mobile for a Go Language webapp backend.
 It also demonstrates how to use the private app storage space on Android
 to persist data and how to link up all the build all components using Gradle.
 
-![Screenshot](https://github.com/srinathh/mobilehtml5app/raw/master/example/todoapp/screenshot.jpg)
+<img src="https://github.com/srinathh/mobilehtml5app/raw/master/example/todoapp/screenshot.jpg" width="300">
 
 # Web Frameworks Used
 The app uses [React](https://facebook.github.io/react/) and [Bootstrap](http://getbootstrap.com/)
