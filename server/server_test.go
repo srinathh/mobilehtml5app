@@ -7,17 +7,19 @@ import (
 	"testing"
 	"time"
 
+	"github.com/srinathh/mobilehtml5app/contextrouter"
+
 	"golang.org/x/net/context"
 )
 
 func initServer() *Server {
 	srv := NewServer()
 
-	srv.HandleFunc(GET, "/:name", func(c context.Context, w http.ResponseWriter, r *http.Request) {
+	srv.Router.HandleFunc(contextrouter.GET, "/:hellostring/:name", func(c context.Context, w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%s, %s", c.Value("hellostring").(string), c.Value("name").(string))
 	})
 
-	srv.Handle(GET, "/", ContextWrapper(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	srv.Router.Handle(contextrouter.GET, "/", contextrouter.ContextWrapper(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello, Stranger")
 	})))
 	return srv
@@ -42,11 +44,11 @@ func checkResponse(url, want string) error {
 func TestBasic(t *testing.T) {
 	srv := initServer()
 
-	rooturl, err := srv.Start("127.0.0.1:0", map[string]string{"hellostring": "Namaste"})
+	rooturl, err := srv.Start("127.0.0.1:0")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := checkResponse(rooturl+"/Alice", "Namaste, Alice"); err != nil {
+	if err := checkResponse(rooturl+"/Namaste/Alice", "Namaste, Alice"); err != nil {
 		t.Error(err)
 	}
 	if err := checkResponse(rooturl, "Hello, Stranger"); err != nil {
@@ -60,15 +62,15 @@ func TestStartStop(t *testing.T) {
 
 	for j := 0; j < 5; j++ {
 		//start the server
-		rooturl, err := srv.Start("127.0.0.1:0", map[string]string{"hellostring": "Namaste"})
+		rooturl, err := srv.Start("127.0.0.1:0")
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := checkResponse(rooturl+"/Alice", "Namaste, Alice"); err != nil {
+		if err := checkResponse(rooturl+"/Namaste/Alice", "Namaste, Alice"); err != nil {
 			t.Error(err)
 		}
 		srv.Stop(time.Millisecond * 100)
-		if err := checkResponse(rooturl+"/Alice", "Namaste, Alice"); err == nil {
+		if err := checkResponse(rooturl+"/Namaste/Alice", "Namaste, Alice"); err == nil {
 			t.Errorf("got a valid response after server close")
 		}
 	}
@@ -78,7 +80,7 @@ func TestIllegalStart(t *testing.T) {
 	srv := initServer()
 	// in most setups, this attempt to connect to an arbitrary low number port should fail
 	// and return server unable to start type of error
-	if _, err := srv.Start("127.0.0.1:1", nil); err == nil {
+	if _, err := srv.Start("127.0.0.1:1"); err == nil {
 		t.Errorf("started on a low numbered port!!!")
 		srv.Stop(time.Millisecond * 100)
 	}
@@ -86,11 +88,11 @@ func TestIllegalStart(t *testing.T) {
 
 func TestUnStoppedStart(t *testing.T) {
 	srv := initServer()
-	_, err := srv.Start("127.0.0.1:9999", nil)
+	_, err := srv.Start("127.0.0.1:9999")
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = srv.Start("127.0.0.1:9999", nil)
+	_, err = srv.Start("127.0.0.1:9999")
 	if err != nil {
 		t.Fatal(err)
 	}
