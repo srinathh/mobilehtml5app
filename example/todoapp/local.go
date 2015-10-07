@@ -10,7 +10,12 @@ import (
 
 func main() {
 	tmpdir := "/tmp"
-	appurl, err := todoapp.Start(tmpdir)
+	app, err := todoapp.NewApp(tmpdir)
+	if err != nil {
+		log.Fatal("Error creating app: %s", err)
+	}
+
+	appurl, err := app.Start()
 	if err != nil {
 		log.Fatalf("Error starting server: %s", err)
 	}

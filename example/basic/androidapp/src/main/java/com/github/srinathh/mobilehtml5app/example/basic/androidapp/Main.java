@@ -13,6 +13,7 @@ import go.basic.Basic;
 
 public class Main extends Activity {
     private WebView mWebView;
+	private Basic.App mSrv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +29,9 @@ public class Main extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+		mSrv = Basic.NewApp();
         try {
-			mWebView.loadUrl(Basic.Start() + "/");
+			mWebView.loadUrl(mSrv.Start() + "/");
         } catch (Exception e) {
             Toast.makeText(this,"Error:"+e.toString(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -42,7 +44,7 @@ public class Main extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-		Basic.Stop();
+		mSrv.Stop();
     }
 
     @Override

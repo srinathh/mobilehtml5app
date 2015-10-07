@@ -57,10 +57,8 @@ func (s itemSorter) Less(i, j int) bool {
 
 func (s itemSorter) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
 
-func fetchAll(c context.Context, w http.ResponseWriter, r *http.Request) {
-	bend := c.Value(backendptr).(backend)
-
-	items, err := bend.fetchAll()
+func (a *App) fetchAll(c context.Context, w http.ResponseWriter, r *http.Request) {
+	items, err := a.bk.fetchAll()
 	if err != nil {
 		log.Printf("fetchAll: error fetching items: %s", err)
 		http.Error(w, "", http.StatusInternalServerError)
@@ -76,7 +74,7 @@ func fetchAll(c context.Context, w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func createItem(c context.Context, w http.ResponseWriter, r *http.Request) {
+func (a *App) createItem(c context.Context, w http.ResponseWriter, r *http.Request) {
 	var i item
 	if err := json.Unmarshal([]byte(r.PostFormValue("data")), &i); err != nil {
 		log.Printf("createItem: error decoding item: %s\n", err)
@@ -93,18 +91,16 @@ func createItem(c context.Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bend := c.Value(backendptr).(backend)
-	if err := bend.create(i); err != nil {
+	if err := a.bk.create(i); err != nil {
 		log.Println(err)
 		http.Error(w, "", http.StatusBadRequest)
 		return
 	}
 }
 
-func deleteItem(c context.Context, w http.ResponseWriter, r *http.Request) {
+func (a *App) deleteItem(c context.Context, w http.ResponseWriter, r *http.Request) {
 	id := c.Value("itemid").(string)
-	bend := c.Value(backendptr).(backend)
-	if err := bend.delete(id); err != nil {
+	if err := a.bk.delete(id); err != nil {
 		log.Println(err)
 		http.Error(w, "", http.StatusBadRequest)
 		return

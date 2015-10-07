@@ -63,8 +63,8 @@ func fitCropScale(i image.Image, r image.Rectangle) image.Image {
 	return imaging.Resize(imaging.Crop(i, sliceRect), r.Dx(), r.Dy(), imaging.Lanczos)
 }
 
-func serveBg(c context.Context, w http.ResponseWriter, r *http.Request) {
-	bg := c.Value(bgimg).(image.Image)
+func (a *App) serveBg(c context.Context, w http.ResponseWriter, r *http.Request) {
+	bg := a.bg
 
 	width, err := strconv.Atoi(c.Value("width").(string))
 	if err != nil {

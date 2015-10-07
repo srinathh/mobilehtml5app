@@ -3,7 +3,6 @@ package com.github.srinathh.mobilehtml5app.example.todoapp.androidapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
@@ -17,10 +16,10 @@ import go.todoapp.Todoapp;
 
 public class Main extends Activity {
     private WebView mWebView;
+	private Todoapp.App mSrv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("lifecycleLogging","in onCreate");
         super.onCreate(savedInstanceState);
         mWebView = new WebView(this);
 		WebSettings webSettings = mWebView.getSettings();
@@ -32,11 +31,11 @@ public class Main extends Activity {
 	// We start the server on onResume
     @Override
     protected void onResume() {
-        Log.d("lifecycleLogging","in onResume");
         super.onResume();
+        File d = getFilesDir();
         try {
-            File fil = this.getFilesDir();
-            mWebView.loadUrl(Todoapp.Start(fil.getPath()) + "/", null);
+            mSrv = Todoapp.NewApp(d.getPath());
+			mWebView.loadUrl(mSrv.Start() + "/");
         } catch (Exception e) {
             Toast.makeText(this,"Error:"+e.toString(),Toast.LENGTH_LONG).show();
             e.printStackTrace();
@@ -48,14 +47,12 @@ public class Main extends Activity {
 	// to be called by Android while onStop or onDestroy may not be called.
     @Override
     protected void onPause() {
-        Log.d("lifecycleLogging","in onPause");
         super.onPause();
-		Todoapp.Stop();
+		mSrv.Stop();
     }
 
     @Override
     protected void onDestroy() {
-        Log.d("lifecycleLogging","in onDestroy");
         super.onDestroy();
     }
 

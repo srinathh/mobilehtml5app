@@ -9,66 +9,63 @@ import (
 	"net/http"
 	"time"
 
-	"golang.org/x/net/context"
-
+	"github.com/srinathh/mobilehtml5app/contextrouter"
 	"github.com/srinathh/mobilehtml5app/example/todoapp/data"
 	"github.com/srinathh/mobilehtml5app/server"
+	"golang.org/x/net/context"
 )
 
-var srv *server.Server
-var bk backend
-
-const (
-	persistdir = "persistdir"
-	backendptr = "backendptr"
-	bgimg      = "bgimg"
-)
-
-func logger(h server.ContextHandlerFunc) server.ContextHandlerFunc {
-	return func(c context.Context, w http.ResponseWriter, r *http.Request) {
-		log.Printf(r.URL.String())
-		h.ServeHTTP(c, w, r)
-	}
+// App implements a web server backend for an android app
+type App struct {
+	srv *server.Server
+	bk  backend
+	bg  image.Image
 }
 
-func loadBG() (image.Image, error) {
-	byt, err := data.Asset("img/bg.jpg")
+// NewApp returns an App
+func NewApp(pdir string) (*App, error) {
+	srv := server.NewServer()
+	bk, err := newBoltBackend(pdir)
 	if err != nil {
-		return nil, fmt.Errorf("error loading background image: %s", err)
+		return nil, err
 	}
-	return jpeg.Decode(bytes.NewReader(byt))
+	bg, err := loadBG()
+	if err != nil {
+		return nil, err
+	}
+
+	app := &App{
+		srv: srv,
+		bk:  bk,
+		bg:  bg,
+	}
+
+	srv.Router.HandleFunc(contextrouter.GET, "/", logger(serveIndex))
+	srv.Router.HandleFunc(contextrouter.GET, "/items", logger(app.fetchAll))
+	srv.Router.HandleFunc(contextrouter.POST, "/items/new", logger(app.createItem))
+	srv.Router.HandleFunc(contextrouter.GET, "/items/:itemid", logger(app.deleteItem))
+	srv.Router.HandleFunc(contextrouter.GET, "/res/*respath", logger(serveRes))
+	srv.Router.HandleFunc(contextrouter.GET, "/bg/:width/:height", logger(app.serveBg))
+
+	return app, nil
 }
 
 // Start is called by the native portion of the webapp to start the web server.
 // It returns the server root URL (without the trailing slash) and any errors.
-func Start(pdir string) (string, error) {
+func (app *App) Start() (string, error) {
+	return app.srv.Start("127.0.0.1:0")
+}
 
-	srv = server.NewServer()
+// Stop is called by the native portion of the webapp to stop the web server.
+func (app *App) Stop() {
+	app.srv.Stop(time.Millisecond * 100)
+}
 
-	//setting up our handlers
-	srv.HandleFunc(server.GET, "/", logger(serveIndex))
-	srv.HandleFunc(server.GET, "/items", logger(fetchAll))
-	srv.HandleFunc(server.POST, "/items/new", logger(createItem))
-	srv.HandleFunc(server.GET, "/items/:itemid", logger(deleteItem))
-	srv.HandleFunc(server.GET, "/res/*respath", logger(serveRes))
-	srv.HandleFunc(server.GET, "/bg/:width/:height", logger(serveBg))
-	//starting the server
-
-	var err error
-
-	bk, err = newBoltBackend(pdir)
-	if err != nil {
-		return "", err
+func logger(h contextrouter.ContextHandlerFunc) contextrouter.ContextHandlerFunc {
+	return func(c context.Context, w http.ResponseWriter, r *http.Request) {
+		log.Printf(r.URL.String())
+		h.ServeHTTP(c, w, r)
 	}
-
-	var bg image.Image
-
-	bg, err = loadBG()
-	if err != nil {
-		return "", err
-	}
-
-	return srv.Start("127.0.0.1:0", map[string]interface{}{backendptr: bk, bgimg: bg})
 }
 
 type backend interface {
@@ -78,11 +75,10 @@ type backend interface {
 	stop()
 }
 
-// Stop is called by the native portion of the webapp to stop the web server.
-func Stop() {
-	log.Println("calling backend.stop")
-	bk.stop()
-	log.Println("calling server.Stop")
-	srv.Stop(time.Millisecond * 100)
-	log.Println("finishing with Stop")
+func loadBG() (image.Image, error) {
+	byt, err := data.Asset("img/bg.jpg")
+	if err != nil {
+		return nil, fmt.Errorf("error loading background image: %s", err)
+	}
+	return jpeg.Decode(bytes.NewReader(byt))
 }
