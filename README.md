@@ -6,6 +6,9 @@ and Javascript and make use of the plethora of standard and very mature Web and 
 development frameworks available today rather than using OpenGL or the Native UI system.
 It currently supports only the Android platform.
 
+## Updates
+- A few [breaking changes](https://github.com/srinathh/mobilehtml5app/commit/a21bb66371bec6a5ade0de2c586bca19f0c6b140) have been made to the API to improve architecture, stability & facilitate a "noserver" option
+
 ## Motivation 
 Go Language has introduced support for mobile application development with version 1.5
 and the mobile toolchain is rapidly developing. However, the current UI focus is primarily
@@ -23,7 +26,11 @@ server strengths in conjunction with HTML5 supporting WebViews to create mobile 
 
 ## Usage & Reference
 - First use `go get github.com/srinathh/mobilehtml5app/...` to get the packages and the command
+- Look at the example apps to get a flavor of how the Go & Java app pieces interact. To load the 
+  app in Android Studio, select **Import Project** from the Android Studio starting menu and 
+  point it to the **androidapp** folder under the example folder. The Go backend will automatically
+  be rebuilt via Gradle.
 - Refer to [mobilehtml5app command](http://godoc.org/github.com/srinathh/mobilehtml5app/cmd/mobilehtml5app) for documentation on how to generate a mobile app project with a go HTTP server backend and HTML5 frontend.
 - Refer to [server package](http://godoc.org/github.com/srinathh/mobilehtml5app/server) for documentation on the server used in the webapp that supports graceful restarts and parameterized routing
-
+ 
 More documentation to come.
